@@ -1,0 +1,67 @@
+---
+import { linkedin, github } from '../data/liens';
+---
+
+<section id="top" class="relative mx-auto flex max-w-page flex-wrap items-center gap-10 px-5 pt-6 pb-14 sm:px-8 sm:pt-10 sm:pb-[72px]">
+  <div class="relative z-[2] flex min-w-0 flex-[1_1_480px] flex-col gap-6">
+    <div class="rise d1 inline-flex items-center gap-2.5 self-start rounded-full border border-line bg-white py-2 pr-3.5 pl-3 text-[13px] font-semibold text-text">
+      <span class="live-g size-[9px] shrink-0 rounded-full bg-green"></span>
+      Disponible pour un CDI · mobile partout en France
+    </div>
+
+    <h1 class="rise d2 m-0 font-display text-[clamp(44px,11.5vw,76px)] leading-[.98] font-extrabold tracking-[-.035em] text-balance">
+      <span class="text-ink">Serigne Bassirou</span><br />
+      <span class="text-gradient">Ndiaye</span>
+    </h1>
+
+    <p class="rise d3 m-0 min-h-[46px] font-mono text-[15px] font-medium text-text sm:min-h-[28px] sm:text-[19px]">
+      &gt; <span id="typed">Data Scientist · NLP &amp; IA générative</span><span class="caret"></span>
+    </p>
+
+    <p class="rise d3 m-0 max-w-[560px] text-[17px] leading-[1.65] text-muted sm:text-lg">
+      Je conçois des solutions d'IA qui font gagner du temps aux équipes métier : tri automatique de courriers administratifs, analyse de documents par IA générative, extraction de données par OCR. Diplômé du Master MLSD de l'Université Paris Cité, j'ai passé 14 mois au sein de l'équipe IA de la Caisse des Dépôts.
+    </p>
+
+    <div class="rise d4 flex flex-wrap gap-3">
+      <a class="btn btn-main" href="#projets">Voir mes projets
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+      <a class="btn btn-ghost" href="#contact">M'écrire</a>
+      <a class="btn btn-ghost px-3.5" href={linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (nouvel onglet)">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"></path></svg>
+      </a>
+      <a class="btn btn-ghost px-3.5" href={github} target="_blank" rel="noopener noreferrer" aria-label="GitHub (nouvel onglet)">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="rise d3 relative h-[340px] min-w-0 flex-[1_1_420px] sm:h-[500px]">
+    <div aria-hidden="true" class="absolute inset-[30px] rounded-full bg-[radial-gradient(closest-side,rgba(47,91,255,.16),rgba(122,92,255,.08)_55%,rgba(246,248,252,0)_100%)]"></div>
+    <canvas id="cloud" role="img" aria-label="Nuage de points animé représentant des données qui se regroupent en clusters" class="absolute inset-0 size-full cursor-crosshair"></canvas>
+    <div class="absolute bottom-[8%] left-[6%] flex items-center gap-2 rounded-[10px] border border-line bg-white/[.88] px-3 py-2 font-mono text-xs text-muted">
+      <span class="size-2 rounded-full bg-primary"></span>espace d'embeddings · passe la souris
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initCloud } from '../scripts/cloud';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Titre qui s'écrit (le texte complet est dans le HTML si le JS ne tourne pas)
+  const typed = document.getElementById('typed');
+  if (typed && !reduce) {
+    const full = typed.textContent ?? '';
+    let i = 0;
+    typed.textContent = '';
+    const timer = setInterval(() => {
+      typed.textContent = full.slice(0, ++i);
+      if (i >= full.length) clearInterval(timer);
+    }, 55);
+  }
+
+  const canvas = document.getElementById('cloud');
+  if (canvas instanceof HTMLCanvasElement) initCloud(canvas);
+</script>

@@ -1,0 +1,53 @@
+---
+// Des courriers qui tombent et se rangent dans leur catégorie.
+const bacs = [
+  { x: 90, label: 'retraite', color: '#2F5BFF' },
+  { x: 210, label: 'succession', color: '#7A5CFF' },
+  { x: 330, label: 'attestation', color: '#14A8E0' },
+];
+const source = { x: 210, y: 50 };
+// Ordre d'arrivée : bac visé et position dans le bac
+const chutes = [[0, -22], [1, 0], [2, 22], [1, -22], [0, 0], [2, -22], [2, 0], [0, 22], [1, 22]];
+const points = chutes.map(([bac, dx], i) => ({
+  dx: bacs[bac].x + dx - source.x,
+  dy: 168 - source.y,
+  color: bacs[bac].color,
+  delay: i * 0.45,
+}));
+const { class: taille = 'h-[180px] w-full sm:h-[220px]' } = Astro.props;
+---
+
+<svg role="img" aria-label="Des courriers qui se rangent automatiquement dans trois catégories : retraite, succession, attestation" viewBox="0 0 420 220" fill="none" class={taille}>
+  <g stroke="#C9D3EA" stroke-width="1.5" stroke-dasharray="3 5">
+    {bacs.map((bac) => <line x1={source.x} y1="48" x2={bac.x} y2="112"></line>)}
+  </g>
+  <rect x="188" y="10" width="44" height="30" rx="5" fill="#FFFFFF" stroke="#C9D3EA" stroke-width="1.5"></rect>
+  <path d="M190 13 L210 28 L230 13" stroke="#C9D3EA" stroke-width="1.5" stroke-linejoin="round"></path>
+  {bacs.map((bac) => (
+    <g>
+      <path d={`M${bac.x - 50} 116 v56 a10 10 0 0 0 10 10 h80 a10 10 0 0 0 10 -10 v-56`} fill="#FFFFFF" stroke="#C9D3EA" stroke-width="1.5"></path>
+      <text x={bac.x} y="204" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#4A5470">{bac.label}</text>
+    </g>
+  ))}
+  {points.map((p) => (
+    <circle class="courrier" cx={source.x} cy={source.y} r="6" style={`--dx:${p.dx}px;--dy:${p.dy}px;--c:${p.color};animation-delay:${p.delay}s`}></circle>
+  ))}
+</svg>
+
+<style>
+  .courrier {
+    transform: translate(var(--dx), var(--dy));
+    fill: var(--c);
+    animation: tri-sort 6s infinite backwards;
+  }
+  @keyframes tri-sort {
+    0% { transform: translate(0, 0); fill: #C9D3EA; opacity: 0; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+    5% { transform: translate(0, 0); fill: #C9D3EA; opacity: 1; animation-timing-function: cubic-bezier(.5, 0, .3, 1); }
+    24% { transform: translate(var(--dx), var(--dy)); fill: var(--c); opacity: 1; }
+    90% { transform: translate(var(--dx), var(--dy)); fill: var(--c); opacity: 1; }
+    97%, 100% { transform: translate(var(--dx), var(--dy)); fill: var(--c); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .courrier { animation: none; }
+  }
+</style>

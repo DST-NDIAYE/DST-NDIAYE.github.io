@@ -1,0 +1,49 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import Timeline from './Timeline.astro';
+import TimelineItem from './TimelineItem.astro';
+
+const formations = [
+  {
+    dates: '2024 – 2026',
+    diplome: 'Master Informatique – Machine Learning pour la Science des Données (MLSD), en alternance',
+    etablissement: 'Université Paris Cité',
+    cours: 'Machine Learning, Deep Learning, NLP et text mining, IA générative, LLM, RAG, séries temporelles, systèmes de recommandation, analyse de graphes, Big Data',
+  },
+  {
+    dates: '2022 – 2024',
+    diplome: 'Licence Mathématiques et Applications',
+    etablissement: 'Université Paris Cité',
+    cours: 'Probabilités, statistiques, programmation orientée objet (Java), réseaux et sécurité',
+  },
+  {
+    dates: '2019 – 2022',
+    diplome: 'Licence Mathématiques et Informatique Appliquées',
+    etablissement: 'Université Cheikh Anta Diop, Dakar',
+    cours: 'Algèbre, analyse, cryptographie, programmation orientée objet, développement web, réseaux',
+  },
+];
+---
+
+<section id="formations" class="mx-auto flex max-w-page flex-col gap-10 px-5 pb-20 sm:px-8 sm:pb-[88px]">
+  <SectionHeading label="Parcours" title="Formations" />
+  <div class="flex max-w-[880px] flex-col gap-6">
+    <Timeline>
+      {formations.map((f) => (
+        <TimelineItem>
+          <span class="font-mono text-[13px] text-muted">{f.dates}</span>
+          <h3 class="m-0 font-display text-[20px] leading-snug font-bold tracking-[-.02em] text-balance">{f.diplome}</h3>
+          <p class="m-0 text-[15px] font-semibold text-primary">{f.etablissement}</p>
+          <ul class="m-0 mt-1 flex list-none flex-wrap gap-2 p-0">
+            {f.cours.split(', ').map((c) => c.charAt(0).toUpperCase() + c.slice(1)).map((c) => (
+              <li class="rounded-chip bg-chip-bg px-2.5 py-1.5 text-[12.5px] font-semibold text-text">{c}</li>
+            ))}
+          </ul>
+        </TimelineItem>
+      ))}
+    </Timeline>
+    <p data-reveal class="m-0 rounded-[18px] border border-line border-l-[3px] border-l-primary bg-white px-6 py-5 text-[15.5px] leading-[1.6] text-text">
+      <strong class="text-ink">Mémoire de master :</strong> « Exploitation de l'intelligence artificielle pour l'automatisation et l'analyse de flux documentaires à la Caisse des Dépôts ».
+    </p>
+  </div>
+</section>

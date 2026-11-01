@@ -1,0 +1,49 @@
+---
+// Un réseau de nœuds où une communauté (le réseau de fraude) s'illumine.
+const noeuds = [
+  [60, 60], [112, 38], [90, 112], [152, 88], [60, 172], [132, 172], [194, 142], [200, 58],
+  [384, 172], [330, 184], [384, 56],
+];
+const liens = [
+  [[60, 60], [112, 38]], [[60, 60], [90, 112]], [[112, 38], [152, 88]], [[90, 112], [152, 88]],
+  [[90, 112], [60, 172]], [[60, 172], [132, 172]], [[132, 172], [194, 142]], [[152, 88], [194, 142]],
+  [[152, 88], [200, 58]], [[200, 58], [250, 110]], [[194, 142], [250, 110]], [[330, 184], [290, 128]],
+  [[384, 172], [330, 184]], [[384, 172], [340, 104]], [[384, 56], [320, 50]],
+];
+const communaute = [[270, 70], [320, 50], [340, 104], [290, 128], [250, 110]];
+const liensCommunaute = [
+  [0, 1], [0, 4], [0, 3], [1, 2], [2, 3], [4, 3], [0, 2],
+].map(([a, b]) => [communaute[a], communaute[b]]);
+const { class: taille = 'h-[180px] w-full sm:h-[220px]' } = Astro.props;
+---
+
+<svg role="img" aria-label="Un réseau de comptes reliés où une communauté suspecte s'illumine" viewBox="0 0 420 220" fill="none" class={taille}>
+  <circle class="aura" cx="295" cy="90" r="72" fill="#2F5BFF"></circle>
+  <g stroke="#C9D3EA" stroke-width="1.5">
+    {liens.map(([a, b]) => <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]}></line>)}
+  </g>
+  <g class="liens-communaute" stroke-width="2.4" stroke-linecap="round">
+    {liensCommunaute.map(([a, b]) => <line x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]}></line>)}
+  </g>
+  <g fill="#FFFFFF" stroke="#C9D3EA" stroke-width="1.5">
+    {noeuds.map(([x, y]) => <circle cx={x} cy={y} r="7"></circle>)}
+  </g>
+  <g class="noeuds-communaute" stroke-width="2">
+    {communaute.map(([x, y]) => <circle cx={x} cy={y} r="8"></circle>)}
+  </g>
+</svg>
+
+<style>
+  .aura { opacity: .12; animation: gr-aura 4.5s ease-in-out infinite; }
+  .liens-communaute { stroke: #2F5BFF; animation: gr-lien 4.5s ease-in-out infinite; }
+  .noeuds-communaute { fill: #2F5BFF; stroke: #2F5BFF; animation: gr-noeud 4.5s ease-in-out infinite; }
+  @keyframes gr-aura { 0%, 20%, 100% { opacity: 0; } 40%, 80% { opacity: .12; } }
+  @keyframes gr-lien { 0%, 20%, 100% { stroke: #C9D3EA; } 40%, 80% { stroke: #2F5BFF; } }
+  @keyframes gr-noeud {
+    0%, 20%, 100% { fill: #FFFFFF; stroke: #C9D3EA; }
+    40%, 80% { fill: #2F5BFF; stroke: #2F5BFF; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .aura, .liens-communaute, .noeuds-communaute { animation: none; }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+// Une page scannée à l'envers qui se redresse, puis une ligne de scan qui lit trois champs.
+const champs = [
+  { y: 84, label: 'nom', fin: 262, cls: 'champ-1' },
+  { y: 122, label: 'e-mail', fin: 270, cls: 'champ-2' },
+  { y: 160, label: 'SIRET', fin: 256, cls: 'champ-3' },
+];
+const { class: taille = 'h-[180px] w-full sm:h-[220px]' } = Astro.props;
+---
+
+<svg role="img" aria-label="Un formulaire scanné à l'envers qui se redresse, puis une lecture qui extrait le nom, l'e-mail et le SIRET" viewBox="0 0 420 220" fill="none" class={taille}>
+  <g class="page">
+    <rect x="134" y="16" width="152" height="188" rx="8" fill="#FFFFFF" stroke="#C9D3EA" stroke-width="1.5"></rect>
+    <g stroke="#D7DEEE" stroke-linecap="round">
+      <line x1="150" y1="36" x2="240" y2="36" stroke-width="6"></line>
+      <line x1="150" y1="52" x2="210" y2="52" stroke-width="5"></line>
+    </g>
+    {champs.map((champ) => (
+      <g>
+        <rect class={`surligne ${champ.cls}`} x="142" y={champ.y - 13} width="136" height="26" rx="6" fill="#E8EEFF" stroke="#2F5BFF" stroke-width="1.5"></rect>
+        <text x="150" y={champ.y + 4} font-family="JetBrains Mono, monospace" font-size="10" fill="#4A5470">{champ.label}</text>
+        <line x1="200" y1={champ.y} x2={champ.fin} y2={champ.y} stroke="#D7DEEE" stroke-width="6" stroke-linecap="round"></line>
+      </g>
+    ))}
+  </g>
+  <line class="scan" x1="124" y1="16" x2="296" y2="16" stroke="#2F5BFF" stroke-width="2.4" stroke-linecap="round"></line>
+</svg>
+
+<style>
+  .page { transform-origin: 210px 110px; animation: ocr-page 6s infinite; }
+  .scan { opacity: 0; animation: ocr-scan 6s infinite; }
+  .champ-1 { animation: ocr-champ-1 6s infinite; }
+  .champ-2 { animation: ocr-champ-2 6s infinite; }
+  .champ-3 { animation: ocr-champ-3 6s infinite; }
+
+  @keyframes ocr-page {
+    0% { transform: rotate(180deg); opacity: 0; }
+    6% { transform: rotate(180deg); opacity: 1; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+    26%, 92% { transform: rotate(0deg); opacity: 1; }
+    100% { transform: rotate(0deg); opacity: 0; }
+  }
+  @keyframes ocr-scan {
+    0%, 30% { transform: translateY(0); opacity: 0; }
+    33% { transform: translateY(0); opacity: 1; }
+    73% { transform: translateY(188px); opacity: 1; }
+    76%, 100% { transform: translateY(188px); opacity: 0; }
+  }
+  @keyframes ocr-champ-1 { 0%, 46% { opacity: 0; } 49%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
+  @keyframes ocr-champ-2 { 0%, 54% { opacity: 0; } 57%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
+  @keyframes ocr-champ-3 { 0%, 62% { opacity: 0; } 65%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page, .scan, .surligne { animation: none; }
+  }
+</style>

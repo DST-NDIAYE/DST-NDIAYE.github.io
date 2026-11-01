@@ -1,0 +1,22 @@
+---
+// 87 %, 6 et 14 mois défilent ; 1 s'affiche directement.
+const stats = [
+  { value: 87, suffix: ' %', anime: true, label: "d'accuracy sur la classification automatique de courriers administratifs, plus de 35 motifs" },
+  { value: 6, anime: true, label: 'certifications Dataiku, dont MLOps et IA générative' },
+  { value: 1, label: "idée lauréate du challenge d'innovation interne DPS'Innov" },
+  { value: 14, suffix: ' mois', anime: true, label: 'à la Caisse des Dépôts, stage puis alternance' },
+];
+---
+
+<section aria-label="Chiffres clés" class="mx-auto max-w-page px-5 pb-16 sm:px-8 sm:pb-20">
+  <div data-reveal class="grid grid-cols-1 gap-px overflow-hidden rounded-panel border border-line bg-line-soft sm:grid-cols-2 lg:grid-cols-4">
+    {stats.map((stat) => (
+      <div class="flex flex-col gap-1.5 bg-white px-8 py-[30px]">
+        <span class="font-display text-[46px] font-extrabold tracking-[-.03em] text-ink tabular-nums">
+          <span data-count={stat.anime ? stat.value : undefined}>{stat.value}</span>{stat.suffix && <span class="text-primary">{stat.suffix}</span>}
+        </span>
+        <span class="text-[15px] leading-normal text-muted">{stat.label}</span>
+      </div>
+    ))}
+  </div>
+</section>

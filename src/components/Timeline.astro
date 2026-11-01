@@ -1,0 +1,12 @@
+---
+// Frise verticale : la ligne colorée se dessine au scroll (voir scripts/reveal.ts).
+// Sans JS ou avec prefers-reduced-motion, elle est affichée entière.
+---
+
+<div class="relative">
+  <span aria-hidden="true" class="absolute top-3 bottom-3 left-[11px] w-[2px] rounded-full bg-line"></span>
+  <span aria-hidden="true" data-timeline-line class="absolute top-3 bottom-3 left-[11px] w-[2px] origin-top rounded-full bg-gradient-to-b from-primary to-violet"></span>
+  <ol class="relative m-0 flex list-none flex-col gap-6 p-0">
+    <slot />
+  </ol>
+</div>

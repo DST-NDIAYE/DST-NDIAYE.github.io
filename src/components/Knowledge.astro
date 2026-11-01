@@ -1,0 +1,32 @@
+---
+import SectionHeading from './SectionHeading.astro';
+
+const partages = [
+  {
+    titre: 'Ateliers de prompt engineering',
+    texte: 'Pour les analystes financiers : support de formation, few-shot, chaîne de pensée, bonnes pratiques avec Mistral Large.',
+  },
+  {
+    titre: 'Journal Club IA : graphes et GPU',
+    texte: "La théorie des graphes appliquée à la détection de fraude, et l'accélération des calculs sur GPU.",
+  },
+  {
+    titre: 'Journal Club IA : code professionnel en Python',
+    mention: 'co-animé',
+    texte: 'Programmation orientée objet, Clean Code, principes SOLID, tests avec pytest, typage, logs, environnements virtuels.',
+  },
+];
+---
+
+<section id="partage" class="mx-auto flex max-w-page flex-col gap-10 px-5 pb-20 sm:px-8 sm:pb-[88px]">
+  <SectionHeading label="Partage de connaissances" title="Transmettre et partager" />
+  <ul class="m-0 grid list-none gap-4 p-0 md:grid-cols-3">
+    {partages.map((p) => (
+      <li data-reveal class="flex flex-col gap-2.5 rounded-[18px] border border-line bg-white p-6">
+        <h3 class="m-0 font-display text-[17px] leading-snug font-bold text-ink">{p.titre}</h3>
+        {p.mention && <span class="self-start rounded-full bg-primary-soft px-2.5 py-[3px] font-mono text-[11px] text-primary-dark">{p.mention}</span>}
+        <p class="m-0 text-[15px] leading-[1.6] text-muted">{p.texte}</p>
+      </li>
+    ))}
+  </ul>
+</section>

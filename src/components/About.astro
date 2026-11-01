@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import photo from '../assets/photo.png';
+import SectionHeading from './SectionHeading.astro';
+
+const paragraphes = [
+  "J'ai commencé par les mathématiques à Dakar, puis je les ai appliquées à la donnée à Paris. Après deux licences en mathématiques et informatique, j'ai rejoint le Master Machine Learning pour la Science des Données de l'Université Paris Cité.",
+  "Pendant 14 mois, au sein de l'équipe Numérique, Data et IA de la Caisse des Dépôts, j'ai travaillé sur un problème très concret : des dizaines de milliers de documents administratifs à lire, trier et analyser chaque année. J'ai fait évoluer un modèle de tri automatique des courriers, migré son pipeline sur Dataiku, et aidé une direction financière à analyser de longs appels d'offres avec l'IA générative.",
+  "Ce que j'en retiens : le métier de Data Scientist ne s'arrête pas au modèle. Un algorithme utile est un algorithme fiable, maintenable, et compris par les équipes qui l'utilisent.",
+];
+
+// Icônes en trait (24×24) : cible, flèches, balance, couches, groupe, sigma
+const atouts = [
+  {
+    titre: 'Je pars du besoin métier.',
+    texte: 'Avant de choisir un modèle, je cherche à comprendre le problème, les utilisateurs et ce qui compte vraiment pour eux.',
+    icone: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  },
+  {
+    titre: "Je m'adapte vite.",
+    texte: "En 14 mois, j'ai travaillé sur de la classification, de l'IA générative, de l'OCR et des graphes. Je suis prêt à aborder de nouveaux sujets et de nouveaux secteurs.",
+    icone: '<path d="M4 9h13l-3-3M20 15H7l3 3"/>',
+  },
+  {
+    titre: 'Je cherche la méthode qui marche.',
+    texte: 'Je compare plusieurs approches et je garde la plus performante, même quand c\'est la plus simple.',
+    icone: '<path d="M12 4v16M7 20h10M5 7h14"/><path d="M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/>',
+  },
+  {
+    titre: 'Je pense au-delà du notebook.',
+    texte: 'Code propre, pipeline maintenable, modèle qui tient en production.',
+    icone: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+  },
+  {
+    titre: 'Je travaille en équipe et je transmets.',
+    texte: "J'explique simplement ce que fait un modèle et j'accompagne ceux qui l'utilisent.",
+    icone: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/>',
+  },
+  {
+    titre: "J'ai une base mathématique solide.",
+    texte: 'Deux licences en mathématiques avant mon master.',
+    icone: '<path d="M18 5H6l6 7-6 7h12"/>',
+  },
+];
+---
+
+<section id="apropos" class="mx-auto flex max-w-page flex-col gap-10 px-5 pb-20 sm:px-8 sm:pb-[88px]">
+  <SectionHeading label="À propos" title="Des mathématiques à la donnée" />
+
+  <div class="grid items-center gap-10 md:grid-cols-[minmax(0,360px)_1fr] lg:gap-14">
+    <div data-reveal class="relative mx-auto w-full max-w-[360px]">
+      <div aria-hidden="true" class="absolute -inset-6 rounded-full bg-[radial-gradient(closest-side,rgba(47,91,255,.22),rgba(122,92,255,.10)_60%,rgba(246,248,252,0)_100%)]"></div>
+      <Image
+        src={photo}
+        alt="Portrait de Serigne Bassirou Ndiaye"
+        widths={[360, 540, 720]}
+        sizes="(min-width: 768px) 360px, calc(100vw - 40px)"
+        class="relative aspect-[4/5] w-full rounded-[28px] border border-line object-cover object-top shadow-card-hover"
+      />
+    </div>
+    <div data-reveal class="flex flex-col gap-5 text-[17px] leading-[1.7] text-muted">
+      {paragraphes.map((p) => <p class="m-0">{p}</p>)}
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-6">
+    <h3 data-reveal class="m-0 font-display text-2xl font-bold tracking-[-.02em]">Ce que j'apporte à une équipe data</h3>
+    <ul class="m-0 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+      {atouts.map((atout) => (
+        <li data-reveal class="flex flex-col gap-3 rounded-[18px] border border-line bg-white p-6">
+          <span class="grid size-11 place-items-center rounded-btn bg-primary-soft text-primary">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={atout.icone}></svg>
+          </span>
+          <p class="m-0 font-display text-[17px] font-bold text-ink">{atout.titre}</p>
+          <p class="m-0 text-[15px] leading-[1.6] text-muted">{atout.texte}</p>
+        </li>
+      ))}
+    </ul>
+    <p data-reveal class="m-0 flex items-start gap-2.5 text-[16px] font-semibold text-text">
+      <span class="mt-[7px] size-2 shrink-0 rounded-full bg-primary"></span>
+      Ouvert à tous les projets data : Data Science, Machine Learning, IA générative, NLP, analyse de données.
+    </p>
+  </div>
+</section>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  couleur: 'bleu' | 'vert' | 'violet';
+}
+
+const { couleur } = Astro.props;
+const style = {
+  bleu: 'text-primary-dark bg-primary-soft',
+  vert: 'text-green-dark bg-green-soft',
+  violet: 'text-violet-dark bg-violet-soft',
+}[couleur];
+---
+
+<span class={`inline-flex items-center gap-[7px] self-start rounded-full px-2.5 py-[5px] text-xs font-bold ${style}`}>
+  {couleur === 'vert' && <span class="live-g size-[7px] rounded-full bg-green"></span>}
+  <slot />
+</span>
