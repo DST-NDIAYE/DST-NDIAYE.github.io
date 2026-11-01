@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+.env
+.env.*
+npm-debug.log*
+
+# Notes de travail (restent en local)
+contenu.md
+maquette-reference.html
+
+# Originaux personnels gardés en local (le site utilise src/assets/photo.png et public/CV_…pdf)
+/photo.png
+/CV_Serigne_Bassirou_NDIAYE.pdf

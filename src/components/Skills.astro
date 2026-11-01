@@ -1,0 +1,71 @@
+---
+import SectionHeading from './SectionHeading.astro';
+
+const domaines = [
+  {
+    nom: 'Langages',
+    entreprise: ['Python', 'SQL'],
+    master: ['R', 'Java', 'C'],
+  },
+  {
+    nom: 'Machine Learning',
+    entreprise: ['Scikit-learn', 'Pandas', 'NumPy', 'TF-IDF', 'SVM', 'Naive Bayes', 'Gradient Boosting', 'Stacking', 'imbalanced-learn'],
+    master: ['TensorFlow', 'Keras', 'PyTorch', 'clustering', 'séries temporelles', 'systèmes de recommandation'],
+  },
+  {
+    nom: 'NLP et IA générative',
+    entreprise: ['spaCy', 'NLTK', 'regex', 'LangChain', 'Mistral', 'BGE-M3', 'FAISS', 'RAG', 'prompt engineering'],
+    master: ['Hugging Face', 'OpenAI API', 'FastText'],
+  },
+  {
+    nom: 'Documents et OCR',
+    entreprise: ['PyMuPDF', 'Tesseract', 'EasyOCR'],
+    master: [],
+  },
+  {
+    nom: 'MLOps et outils',
+    entreprise: ['Dataiku', 'Git/GitHub', 'méthode Agile'],
+    master: ['Docker', 'FastAPI', 'API REST', 'AWS', 'Spark'],
+  },
+  {
+    nom: 'Graphes',
+    entreprise: [],
+    master: ['Louvain', 'PageRank', 'cuGraph', 'PyTorch Geometric'],
+  },
+];
+
+const plein = 'rounded-chip border border-primary-soft bg-primary-soft px-2.5 py-1.5 text-[12.5px] font-semibold text-primary-dark';
+const contour = 'rounded-chip border border-line-hover bg-white px-2.5 py-1.5 text-[12.5px] font-semibold text-muted';
+---
+
+<section id="competences" class="mx-auto flex max-w-page flex-col gap-10 px-5 pb-20 sm:px-8 sm:pb-[88px]">
+  <SectionHeading label="Compétences" title="Compétences et outils">
+    <ul class="m-0 flex list-none flex-wrap items-center gap-x-5 gap-y-2 p-0 text-[14px] text-muted">
+      <li class="flex items-center gap-2"><span class="h-4 w-7 rounded-[5px] border border-primary-soft bg-primary-soft" aria-hidden="true"></span>Utilisé en entreprise</li>
+      <li class="flex items-center gap-2"><span class="h-4 w-7 rounded-[5px] border border-line-hover bg-white" aria-hidden="true"></span>Vu en master</li>
+    </ul>
+  </SectionHeading>
+
+  <!-- Colonnes type masonry : chaque carte garde la hauteur de son contenu -->
+  <div class="columns-1 gap-4 sm:columns-2 lg:columns-3">
+    {domaines.map((d) => (
+      <div data-reveal class="mb-4 flex break-inside-avoid flex-col gap-4 rounded-[18px] border border-line bg-white p-6">
+        <h3 class="m-0 font-display text-[18px] font-bold tracking-[-.01em]">{d.nom}</h3>
+        {d.entreprise.length > 0 && (
+          <ul class="m-0 flex list-none flex-wrap gap-2 p-0" aria-label={`${d.nom} : utilisé en entreprise`}>
+            {d.entreprise.map((t) => <li class={plein}>{t}</li>)}
+          </ul>
+        )}
+        {d.master.length > 0 && (
+          <ul class="m-0 flex list-none flex-wrap gap-2 p-0" aria-label={`${d.nom} : vu en master`}>
+            {d.master.map((t) => <li class={contour}>{t}</li>)}
+          </ul>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <p data-reveal class="m-0 text-[15.5px] text-text">
+    <strong class="text-ink">Langues :</strong> français (bilingue), anglais (B1), wolof (langue maternelle).
+  </p>
+</section>

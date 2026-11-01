@@ -1,0 +1,128 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Badge from '../../components/Badge.astro';
+import Contact from '../../components/Contact.astro';
+import { animations } from '../../components/animations';
+
+export async function getStaticPaths() {
+  const projets = (await getCollection('projets')).sort((a, b) => a.data.ordre - b.data.ordre);
+  // Projet suivant dans l'ordre ; après le dernier, on revient au premier
+  return projets.map((projet, i) => ({
+    params: { slug: projet.id },
+    props: { projet, suivant: projets[(i + 1) % projets.length] },
+  }));
+}
+
+interface Props {
+  projet: CollectionEntry<'projets'>;
+  suivant: CollectionEntry<'projets'>;
+}
+
+const { projet, suivant } = Astro.props;
+const { titre, accroche, badge, technos, animation, couleur, resume } = projet.data;
+const { Content } = await render(projet);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const Animation = animations[animation];
+const scene = animation === 'jobhunter'
+  ? 'bg-green-tint border-line-green'
+  : 'bg-primary-tint border-line-blue';
+---
+
+<BaseLayout title={`${titre} · Serigne Bassirou Ndiaye`} description={accroche} type="article">
+  <!-- En-tête -->
+  <section class="mx-auto grid max-w-page items-center gap-8 px-5 pt-6 pb-10 sm:px-8 sm:pt-10 lg:grid-cols-[1fr_minmax(0,520px)] lg:gap-12 lg:pb-14">
+    <div class="flex min-w-0 flex-col gap-5">
+      <a href={`${base}#projets`} class="rise d1 navlink self-start p-0">← Projets</a>
+      <div class="rise d1"><Badge couleur={couleur}>{badge}</Badge></div>
+      <h1 class="rise d2 m-0 font-display text-[clamp(34px,8vw,56px)] leading-[1.05] font-extrabold tracking-[-.035em] text-balance">{titre}</h1>
+      <p class="rise d3 m-0 max-w-[560px] text-[18px] leading-[1.6] text-muted">{accroche}</p>
+      <ul class="rise d4 m-0 flex list-none flex-wrap gap-2 p-0">
+        {technos.map((techno) => (
+          <li class="rounded-chip bg-chip-bg px-2.5 py-1.5 text-[12.5px] font-semibold text-text">{techno}</li>
+        ))}
+      </ul>
+    </div>
+    <div class={`rise d3 grid h-[240px] place-items-center overflow-hidden rounded-card border sm:h-[340px] ${scene}`}>
+      <Animation class="h-[220px] w-full sm:h-[310px]" />
+    </div>
+  </section>
+
+  <!-- Résumé rapide -->
+  {resume && resume.length > 0 && (
+    <section aria-label="En bref" class="mx-auto max-w-page px-5 pb-12 sm:px-8 sm:pb-16">
+      <dl data-reveal class={`m-0 grid grid-cols-1 gap-px overflow-hidden rounded-panel border border-line bg-line-soft sm:grid-cols-2 ${resume.length > 3 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+        {resume.map((item) => (
+          <div class="flex flex-col gap-1.5 bg-white px-6 py-5 sm:px-7 sm:py-6">
+            <dt class="font-mono text-[12px] font-medium tracking-[.08em] text-primary uppercase">{item.label}</dt>
+            <dd class="m-0 font-display text-[17px] leading-snug font-bold text-ink">{item.valeur}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )}
+
+  <!-- Corps : texte du fichier Markdown, avec schéma et graphique générés au build -->
+  <article class="contenu-projet mx-auto max-w-page px-5 pb-16 sm:px-8 sm:pb-20">
+    <Content />
+  </article>
+
+  <!-- Projet suivant -->
+  <nav aria-label="Projet suivant" class="mx-auto max-w-page px-5 pb-16 sm:px-8 sm:pb-20">
+    <a data-reveal href={`${base}projets/${suivant.id}/`} class="card group flex flex-col gap-3 rounded-card border border-line bg-white p-6 text-ink no-underline hover:text-ink sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <span class="flex min-w-0 flex-col gap-2">
+        <span class="font-mono text-[13px] font-medium tracking-[.08em] text-primary uppercase">Projet suivant →</span>
+        <span class="font-display text-[24px] font-bold tracking-[-.02em] text-balance sm:text-[28px]">{suivant.data.titre}</span>
+        <span class="text-[15.5px] leading-[1.6] text-muted">{suivant.data.accroche}</span>
+      </span>
+      <span aria-hidden="true" class="grid size-12 shrink-0 place-items-center self-end rounded-full bg-primary text-white transition-transform duration-300 group-hover:translate-x-1 sm:self-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </span>
+    </a>
+  </nav>
+
+  <Contact />
+</BaseLayout>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduce) {
+    // Schémas : les étapes s'allument une par une au fil du scroll
+    document.querySelectorAll<HTMLElement>('[data-schema]').forEach((schema) => {
+      const etapes = [...schema.querySelectorAll<HTMLElement>('[data-step]')];
+      schema.classList.add('schema-anime');
+      ScrollTrigger.create({
+        trigger: schema,
+        start: 'top 80%',
+        end: 'bottom 55%',
+        onUpdate: ({ progress }) => {
+          const allumees = Math.ceil(progress * etapes.length);
+          etapes.forEach((etape, i) => etape.classList.toggle('allume', i < allumees));
+        },
+        onLeave: () => etapes.forEach((etape) => etape.classList.add('allume')),
+      });
+    });
+
+    // Graphique : les barres se remplissent à l'apparition
+    document.querySelectorAll<HTMLElement>('[data-graphique]').forEach((graphique) => {
+      const remplis = graphique.querySelectorAll('.barre-rempli');
+      const extensions = graphique.querySelectorAll('.barre-extension');
+      gsap.set([...remplis, ...extensions], { scaleX: 0, transformOrigin: 'left center' });
+      ScrollTrigger.create({
+        trigger: graphique,
+        start: 'top 80%',
+        once: true,
+        onEnter: () => {
+          gsap.to(remplis, { scaleX: 1, duration: 1, ease: 'power3.out', stagger: 0.12 });
+          gsap.to(extensions, { scaleX: 1, duration: 0.6, ease: 'power2.out', delay: 1.1 });
+        },
+      });
+    });
+  }
+</script>

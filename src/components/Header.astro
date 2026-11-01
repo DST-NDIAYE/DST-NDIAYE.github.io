@@ -1,0 +1,67 @@
+---
+// Liens relatifs à la racine du site, pour fonctionner aussi sous un `base` GitHub Pages.
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const links = [
+  { href: `${base}#apropos`, label: 'À propos' },
+  { href: `${base}#projets`, label: 'Projets' },
+  { href: `${base}#parcours`, label: 'Parcours' },
+  { href: `${base}#competences`, label: 'Compétences' },
+  { href: `${base}#contact`, label: 'Contact' },
+];
+const cv = `${base}CV_Serigne_Bassirou_NDIAYE.pdf`;
+---
+
+<header id="site-header" class="sticky top-0 z-50 border-b border-transparent bg-bg/80 backdrop-blur-md transition-colors duration-300 data-[scrolled]:border-line">
+  <div class="mx-auto flex max-w-page items-center justify-between gap-4 px-5 py-3.5 sm:px-8 lg:py-[18px]">
+    <a href={`${base}#top`} class="flex items-center gap-3 text-ink no-underline hover:text-ink">
+      <span class="grid size-10 place-items-center rounded-logo bg-ink font-display text-[15px] font-extrabold tracking-[.02em] text-white">SN</span>
+      <span class="font-display text-base font-bold">Serigne Ndiaye</span>
+    </a>
+
+    <nav aria-label="Navigation principale" class="hidden items-center gap-[26px] lg:flex">
+      {links.map((link) => <a class="navlink" href={link.href}>{link.label}</a>)}
+      <a class="btn btn-ghost min-h-[42px] px-[18px] text-sm" href={cv} download>Télécharger mon CV</a>
+    </nav>
+
+    <!-- Menu téléphone : <details> fonctionne sans JS ; le script ajoute fermeture au clic et Échap -->
+    <details id="menu-mobile" class="relative lg:hidden">
+      <summary aria-label="Ouvrir le menu" class="grid size-11 cursor-pointer list-none place-items-center rounded-btn border border-line bg-white text-ink [&::-webkit-details-marker]:hidden">
+        <svg class="icon-ouvrir" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+        <svg class="icon-fermer" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </summary>
+      <nav aria-label="Navigation principale" class="absolute top-full right-0 mt-3 flex w-[min(calc(100vw-40px),320px)] flex-col gap-1 rounded-[16px] border border-line bg-white p-3 shadow-card-hover">
+        {links.map((link) => <a class="navlink rounded-[10px] px-3 py-3 hover:bg-chip-bg" href={link.href}>{link.label}</a>)}
+        <a class="btn btn-main mt-2 justify-center" href={cv} download>Télécharger mon CV</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  #menu-mobile .icon-fermer { display: none; }
+  #menu-mobile[open] .icon-ouvrir { display: none; }
+  #menu-mobile[open] .icon-fermer { display: block; }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const onScroll = () => header?.toggleAttribute('data-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const menu = document.getElementById('menu-mobile');
+  if (menu instanceof HTMLDetailsElement) {
+    const summary = menu.querySelector('summary');
+    menu.addEventListener('toggle', () => {
+      summary?.setAttribute('aria-label', menu.open ? 'Fermer le menu' : 'Ouvrir le menu');
+    });
+    menu.querySelectorAll('nav a').forEach((link) => link.addEventListener('click', () => { menu.open = false; }));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) { menu.open = false; summary?.focus(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (menu.open && e.target instanceof Node && !menu.contains(e.target)) menu.open = false;
+    });
+  }
+</script>

@@ -1,0 +1,33 @@
+---
+const { class: taille = 'h-[180px] w-full sm:h-[220px]' } = Astro.props;
+---
+
+<svg role="img" aria-label="Une question reliée aux trois documents les plus pertinents" class={taille} viewBox="0 0 420 220" fill="none">
+  <g stroke="#C9D3EA" stroke-width="1.5">
+    <line x1="210" y1="110" x2="70" y2="50"></line>
+    <line x1="210" y1="110" x2="70" y2="170"></line>
+    <line x1="210" y1="110" x2="350" y2="180"></line>
+    <line x1="210" y1="110" x2="210" y2="28"></line>
+    <line x1="210" y1="110" x2="210" y2="194"></line>
+  </g>
+  <g stroke="#2F5BFF" stroke-width="2.4" stroke-linecap="round">
+    <line class="hot" x1="210" y1="110" x2="350" y2="44"></line>
+    <line class="hot" x1="210" y1="110" x2="370" y2="112"></line>
+    <line class="hot" x1="210" y1="110" x2="52" y2="110"></line>
+  </g>
+  <g fill="#FFFFFF" stroke="#C9D3EA" stroke-width="1.5">
+    <rect x="56" y="36" width="28" height="34" rx="5"></rect>
+    <rect x="56" y="156" width="28" height="34" rx="5"></rect>
+    <rect x="336" y="166" width="28" height="34" rx="5"></rect>
+    <rect x="196" y="10" width="28" height="34" rx="5"></rect>
+    <rect x="196" y="178" width="28" height="34" rx="5"></rect>
+  </g>
+  <g fill="#FFFFFF" stroke="#2F5BFF" stroke-width="2">
+    <rect class="halo" x="336" y="28" width="28" height="34" rx="5"></rect>
+    <rect class="halo" x="356" y="95" width="28" height="34" rx="5"></rect>
+    <rect class="halo" x="36" y="93" width="28" height="34" rx="5"></rect>
+  </g>
+  <circle cx="210" cy="110" r="26" fill="#2F5BFF"></circle>
+  <text x="210" y="117" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="20" fill="#FFFFFF">?</text>
+  <text x="238" y="150" font-family="JetBrains Mono, monospace" font-size="11" fill="#4A5470">recherche · FAISS</text>
+</svg>

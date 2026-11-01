@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { animations } from './animations';
+import Badge from './Badge.astro';
+
+interface Props {
+  projet: CollectionEntry<'projets'>;
+}
+
+const { projet } = Astro.props;
+const { titre, accroche, badge, technos, animation, couleur } = projet.data;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const Animation = animations[animation];
+
+// Fond de l'illustration : vert pour JobHunter, bleu pour les projets CDC
+const scene = animation === 'jobhunter'
+  ? 'bg-green-tint border-line-green'
+  : 'bg-primary-tint border-line-blue';
+
+// Quatre technos sur la carte, le reste résumé en « +N »
+const visibles = technos.slice(0, 4);
+const restantes = technos.length - visibles.length;
+---
+
+<div data-reveal class="flex">
+  <article class="card relative flex w-full flex-col overflow-hidden rounded-card border border-line bg-white">
+    <div class={`grid h-[200px] place-items-center border-b sm:h-[240px] ${scene}`}>
+      <Animation />
+    </div>
+    <div class="flex flex-1 flex-col gap-3.5 px-6 pt-6 pb-7 sm:px-7 sm:pt-[26px] sm:pb-[30px]">
+      <Badge couleur={couleur}>{badge}</Badge>
+      <h3 class="m-0 font-display text-2xl font-bold tracking-[-.02em]">
+        <a href={`${base}projets/${projet.id}/`} class="text-ink no-underline after:absolute after:inset-0 after:content-[''] hover:text-ink focus-visible:outline-none focus-visible:after:rounded-card focus-visible:after:outline-2 focus-visible:after:outline-primary">{titre}</a>
+      </h3>
+      <p class="m-0 text-[15.5px] leading-[1.6] text-muted">{accroche}</p>
+      <ul class="m-0 mt-auto flex list-none flex-wrap gap-2 p-0">
+        {visibles.map((techno) => (
+          <li class="rounded-chip bg-chip-bg px-2.5 py-1.5 text-[12.5px] font-semibold text-text">{techno}</li>
+        ))}
+        {restantes > 0 && (
+          <li class="rounded-chip bg-chip-bg px-2.5 py-1.5 text-[12.5px] font-semibold text-muted" aria-label={`et ${restantes} autres`}>+{restantes}</li>
+        )}
+      </ul>
+    </div>
+  </article>
+</div>

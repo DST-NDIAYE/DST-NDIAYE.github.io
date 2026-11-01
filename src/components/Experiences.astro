@@ -1,0 +1,56 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import Timeline from './Timeline.astro';
+import TimelineItem from './TimelineItem.astro';
+
+const experiences = [
+  {
+    poste: 'Data Scientist en alternance',
+    entreprise: 'Caisse des Dépôts',
+    dates: 'Sept. 2025 – sept. 2026',
+    lieu: 'Paris',
+    equipe: "Direction de l'innovation et de la prospective, équipe Numérique, Data et IA",
+    realisations: [
+      'Suivi et évolution du modèle de tri automatique des courriers (projet DTB) : nettoyage des données, réentraînement, ajout de 7 nouveaux motifs, puis amélioration continue du modèle jusqu\'à 87 % d\'accuracy.',
+      'Migration du pipeline de classification d\'un notebook vers Dataiku, pour automatiser le réentraînement et le suivi (MLOps).',
+      'Conception d\'un assistant RAG sur de la documentation juridique (BGE-M3, FAISS, Mistral, LangChain).',
+      'Analyse d\'appels d\'offres par IA générative avec Mistral Large, et formation des analystes au prompt engineering.',
+      'Veille et partage : présentations sur les graphes pour la détection de fraude et sur les bonnes pratiques de code Python.',
+      'Idée « Analyse fraude avec graphes » retenue parmi les 3 lauréates du challenge interne DPS\'Innov.',
+    ],
+  },
+  {
+    poste: 'Stagiaire Data Scientist',
+    entreprise: 'Caisse des Dépôts',
+    dates: 'Juil. – août 2025',
+    lieu: 'Paris',
+    realisations: [
+      'Traitement de formulaires administratifs scannés : classification par mots-clés, redressement automatique de l\'orientation, extraction de données (nom, e-mail, SIRET) avec PyMuPDF, Tesseract et EasyOCR.',
+      'Prise en main et documentation du pipeline de classification des courriers.',
+      'Formation à Dataiku et obtention de 6 certifications.',
+    ],
+  },
+];
+---
+
+<section id="parcours" class="mx-auto flex max-w-page flex-col gap-10 px-5 pb-20 sm:px-8 sm:pb-[88px]">
+  <SectionHeading label="Parcours" title="Expériences" />
+  <div class="max-w-[880px]">
+    <Timeline>
+      {experiences.map((xp) => (
+        <TimelineItem>
+          <span class="font-mono text-[13px] text-muted">{xp.dates} · {xp.lieu}</span>
+          <h3 class="m-0 font-display text-[22px] font-bold tracking-[-.02em] text-balance">
+            {xp.poste} <span class="text-primary">· {xp.entreprise}</span>
+          </h3>
+          {xp.equipe && <p class="m-0 text-[15px] text-muted">{xp.equipe}</p>}
+          <ul class="m-0 mt-1 flex list-none flex-col gap-2.5 p-0">
+            {xp.realisations.map((r) => (
+              <li class="relative pl-5 text-[15.5px] leading-[1.6] text-text before:absolute before:top-[10px] before:left-0 before:size-1.5 before:rounded-full before:bg-primary before:content-['']">{r}</li>
+            ))}
+          </ul>
+        </TimelineItem>
+      ))}
+    </Timeline>
+  </div>
+</section>

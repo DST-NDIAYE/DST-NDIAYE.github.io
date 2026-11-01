@@ -1,0 +1,75 @@
+---
+// Un long document dont quelques lignes se condensent en un tableau de synthèse.
+const largeurs = [84, 70, 80, 62, 84, 74, 58, 80, 68, 84, 72, 50];
+const lignes = largeurs.map((w, i) => ({ y: 48 + i * 13, w }));
+const retenues = [1, 4, 7, 10];
+const tableau = { x: 250, y: 44, rang: 33 };
+const barres = [76, 60, 70, 52];
+const extraits = retenues.map((index, i) => {
+  const ligne = lignes[index];
+  const yRang = tableau.y + i * tableau.rang;
+  return {
+    y: ligne.y,
+    yRang,
+    largeur: barres[i],
+    dx: 296 - 52,
+    dy: yRang + 12.5 - (ligne.y - 3),
+    delay: i * 0.9,
+  };
+});
+const { class: taille = 'h-[180px] w-full sm:h-[220px]' } = Astro.props;
+---
+
+<svg role="img" aria-label="Un document de 160 pages condensé en un tableau de synthèse" viewBox="0 0 420 220" fill="none" class={taille}>
+  <rect x="36" y="10" width="116" height="200" rx="8" fill="#FFFFFF" stroke="#C9D3EA" stroke-width="1.5"></rect>
+  <text x="94" y="31" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#4A5470">160 pages</text>
+  <g stroke-width="5" stroke-linecap="round">
+    {lignes.map((ligne, i) => {
+      const k = retenues.indexOf(i);
+      return k === -1
+        ? <line x1="52" y1={ligne.y} x2={52 + ligne.w} y2={ligne.y} stroke="#DCE3F2"></line>
+        : <line class="retenue" x1="52" y1={ligne.y} x2={52 + ligne.w} y2={ligne.y} style={`animation-delay:${extraits[k].delay}s`}></line>;
+    })}
+  </g>
+
+  <path class="hot" d="M162 110 C 196 110, 206 110, 238 110" stroke="#2F5BFF" stroke-width="2.4" stroke-linecap="round"></path>
+
+  <text x={tableau.x} y="33" font-family="Sora, sans-serif" font-weight="700" font-size="13" fill="#0B1220">synthèse</text>
+  <rect x={tableau.x} y={tableau.y} width="140" height={tableau.rang * 4} rx="10" fill="#FFFFFF" stroke="#2F5BFF" stroke-width="2"></rect>
+  <g stroke="#E4EAF7" stroke-width="1.5">
+    {[1, 2, 3].map((i) => <line x1={tableau.x} y1={tableau.y + i * tableau.rang} x2={tableau.x + 140} y2={tableau.y + i * tableau.rang}></line>)}
+    <line x1="284" y1={tableau.y} x2="284" y2={tableau.y + tableau.rang * 4}></line>
+  </g>
+  {extraits.map((e) => (
+    <g>
+      <rect x="262" y={e.yRang + 11.5} width="10" height="10" rx="2" fill="#C9D5FF"></rect>
+      <rect class="cellule" x="296" y={e.yRang + 12.5} width={e.largeur} height="8" rx="4" fill="#2F5BFF" style={`animation-delay:${e.delay}s`}></rect>
+      <rect class="extrait" x="52" y={e.y - 3} width="44" height="6" rx="3" fill="#2F5BFF" style={`--dx:${e.dx}px;--dy:${e.dy}px;animation-delay:${e.delay}s`}></rect>
+    </g>
+  ))}
+</svg>
+
+<style>
+  .retenue { stroke: #2F5BFF; animation: ao-ligne 7s infinite backwards; }
+  .extrait { opacity: 0; animation: ao-extrait 7s infinite backwards; }
+  .cellule { animation: ao-cellule 7s infinite backwards; }
+  @keyframes ao-ligne {
+    0%, 4% { stroke: #DCE3F2; }
+    10%, 40% { stroke: #2F5BFF; }
+    50%, 100% { stroke: #DCE3F2; }
+  }
+  @keyframes ao-extrait {
+    0%, 10% { transform: translate(0, 0); opacity: 0; animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+    14% { transform: translate(0, 0); opacity: 1; animation-timing-function: cubic-bezier(.5, 0, .3, 1); }
+    34% { transform: translate(var(--dx), var(--dy)); opacity: 1; }
+    40%, 100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+  }
+  @keyframes ao-cellule {
+    0%, 34% { opacity: 0; }
+    40%, 88% { opacity: 1; }
+    96%, 100% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .retenue, .extrait, .cellule { animation: none; }
+  }
+</style>
